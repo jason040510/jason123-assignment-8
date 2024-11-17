@@ -22,7 +22,7 @@ def generate_ellipsoid_clusters(distance, n_samples=100, cluster_std=0.5):
     X2 = np.random.multivariate_normal(mean=[1, 1], cov=covariance_matrix, size=n_samples)
     
     # Implement: Shift the second cluster along the x-axis and y-axis for a given distance
-    X2 += [distance, distance]
+    X2 += [distance, -distance]
     y2 = np.ones(n_samples)
 
     # Combine the clusters into one dataset
@@ -118,6 +118,9 @@ def do_experiments(start, end, step_num):
         # Store slope and intercept
         slope_list.append(slope)
         intercept_list.append(intercept)
+        x_vals = np.linspace(X[:, 0].min(), X[:, 0].max(), 100)
+        y_vals = -(beta0 + beta1 * x_vals) / beta2  # Rearranged decision boundary equation
+        plt.plot(x_vals, y_vals, color='black', linestyle='--', label='Decision Boundary')
         # Plot fading red and blue contours for confidence levels
         contour_levels = [0.7, 0.8, 0.9]
         alphas = [0.05, 0.1, 0.15]  # Increasing opacity for higher confidence levels
@@ -179,7 +182,7 @@ def do_experiments(start, end, step_num):
     plt.title("Shift Distance vs Beta1 / Beta2 (Slope)")
     plt.xlabel("Shift Distance")
     plt.ylabel("Beta1 / Beta2")
-    plt.ylim(-2, 0)
+   
 
     # Implement: Plot beta0 / beta2 (Intercept ratio)
     plt.subplot(3, 3, 5)
